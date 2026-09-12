@@ -27,26 +27,41 @@ export function safeFileName(name, id) {
 }
 
 // --- Curtidas (localStorage do navegador do convidado) --------------------
-// Não é um mecanismo de segurança — é só para a interface não deixar a
-// mesma pessoa curtir a mesma foto várias vezes por engano no mesmo aparelho.
+// Guardamos { photoId: likeRowId } para saber exatamente qual linha da
+// tabela `likes` apagar quando o convidado descurtir. Não é um mecanismo
+// de segurança — é só a interface lembrar o que esse navegador já curtiu.
 const LIKED_PHOTOS_KEY = "sofia18-liked-photos";
 
-export function getLikedPhotoIds() {
+function readLikedMap() {
   try {
     const raw = localStorage.getItem(LIKED_PHOTOS_KEY);
-    return raw ? new Set(JSON.parse(raw)) : new Set();
+    return raw ? JSON.parse(raw) : {};
   } catch {
-    return new Set();
+    return {};
   }
 }
 
-export function markPhotoAsLiked(photoId) {
-  const liked = getLikedPhotoIds();
-  liked.add(photoId);
+function writeLikedMap(map) {
   try {
-    localStorage.setItem(LIKED_PHOTOS_KEY, JSON.stringify([...liked]));
+    localStorage.setItem(LIKED_PHOTOS_KEY, JSON.stringify(map));
   } catch {
     // Se o localStorage falhar (modo privado, cota cheia etc.), a curtida
-    // já foi salva no banco — só perdemos a marcação visual local.
+    // já foi salva/removida no banco — só perdemos a marcação visual local.
   }
+}
+
+export function getLikedPhotosMap() {
+  return readLikedMap();
+}
+
+export function saveLikedPhoto(photoId, likeRowId) {
+  const map = readLikedMap();
+  map[photoId] = likeRowId;
+  writeLikedMap(map);
+}
+
+export function removeLikedPhoto(photoId) {
+  const map = readLikedMap();
+  delete map[photoId];
+  writeLikedMap(map);
 }

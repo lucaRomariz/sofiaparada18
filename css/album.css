@@ -326,7 +326,6 @@
 .modal__like-btn--liked {
   background-color: var(--color-red);
   color: var(--color-black-pure);
-  cursor: default;
 }
 
 .modal__like-btn--liked svg {

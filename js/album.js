@@ -10,8 +10,9 @@ import { CHALLENGES } from "./config.js";
 import {
   getPhotoUrl,
   formatDateTime,
-  getLikedPhotoIds,
-  markPhotoAsLiked,
+  getLikedPhotosMap,
+  saveLikedPhoto,
+  removeLikedPhoto,
 } from "./utils.js";
 
 // --- Elementos ---------------------------------------------------
@@ -39,7 +40,7 @@ let currentPhotoId = null;
 let allPhotos = [];
 let likeCounts = {};
 let commentCounts = {};
-const likedByMe = getLikedPhotoIds();
+const likedByMe = getLikedPhotosMap();
 
 const CHALLENGES_BY_ID = new Map(CHALLENGES.map((c) => [c.id, c]));
 
@@ -212,11 +213,14 @@ sortOrderEl.addEventListener("change", renderGallery);
 // --- Curtidas --------------------------------------------------------------
 function updateLikeButtonUI(photoId) {
   const count = likeCounts[photoId] || 0;
-  const isLiked = likedByMe.has(photoId);
+  const isLiked = Object.prototype.hasOwnProperty.call(likedByMe, photoId);
 
   modalLikeCountEl.textContent = count;
   modalLikeBtn.classList.toggle("modal__like-btn--liked", isLiked);
-  modalLikeBtn.disabled = isLiked;
+  modalLikeBtn.setAttribute(
+    "aria-label",
+    isLiked ? "Remover curtida desta foto" : "Curtir esta foto"
+  );
 }
 
 function updateGridLikeBadge(photoId) {
@@ -233,40 +237,71 @@ function updateGridLikeBadge(photoId) {
     badge.className = "album-item__like-badge";
     item.appendChild(badge);
   }
-  if (badge) badge.textContent = count;
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = count;
+    } else {
+      badge.remove();
+    }
+  }
 }
 
 modalLikeBtn.addEventListener("click", async () => {
-  if (!currentPhotoId || likedByMe.has(currentPhotoId)) return;
+  if (!currentPhotoId) return;
 
   const photoId = currentPhotoId;
+  const alreadyLiked = Object.prototype.hasOwnProperty.call(likedByMe, photoId);
+
   modalLikeBtn.disabled = true;
 
   try {
-    const { error } = await supabase.from("likes").insert({ photo_id: photoId });
+    if (alreadyLiked) {
+      // --- Descurtir ---------------------------------------------------
+      const likeRowId = likedByMe[photoId];
+      const { error } = await supabase.from("likes").delete().eq("id", likeRowId);
 
-    if (error) {
-      console.error("Erro ao curtir (resposta do Supabase):", error);
-      modalLikeBtn.disabled = false;
-      return;
+      if (error) {
+        console.error("[Sofia18] Erro ao descurtir (Supabase):", error.message || error);
+        return;
+      }
+
+      removeLikedPhoto(photoId);
+      delete likedByMe[photoId];
+      likeCounts[photoId] = Math.max(0, (likeCounts[photoId] || 1) - 1);
+    } else {
+      // --- Curtir ----------------------------------------------------
+      const { data, error } = await supabase
+        .from("likes")
+        .insert({ photo_id: photoId })
+        .select("id")
+        .single();
+
+      if (error) {
+        console.error("[Sofia18] Erro ao curtir (Supabase):", error.message || error);
+        return;
+      }
+
+      saveLikedPhoto(photoId, data.id);
+      likedByMe[photoId] = data.id;
+      likeCounts[photoId] = (likeCounts[photoId] || 0) + 1;
+
+      modalLikeBtn.classList.add("modal__like-btn--pulse");
+      modalLikeBtn.addEventListener(
+        "animationend",
+        () => modalLikeBtn.classList.remove("modal__like-btn--pulse"),
+        { once: true }
+      );
     }
-
-    markPhotoAsLiked(photoId);
-    likedByMe.add(photoId);
-    likeCounts[photoId] = (likeCounts[photoId] || 0) + 1;
 
     updateLikeButtonUI(photoId);
     updateGridLikeBadge(photoId);
-    modalLikeBtn.classList.add("modal__like-btn--pulse");
-    modalLikeBtn.addEventListener(
-      "animationend",
-      () => modalLikeBtn.classList.remove("modal__like-btn--pulse"),
-      { once: true }
-    );
   } catch (err) {
-    // Falha de rede/conexão (não uma resposta de erro "normal" da API) —
-    // sem isso, o botão ficava desabilitado para sempre e nada acontecia.
-    console.error("Erro de conexão ao curtir:", err);
+    // Falha de rede/conexão real (não uma resposta "normal" da API) — sem
+    // isso, o botão ficava travado para sempre sem nenhum aviso. Logamos
+    // o nome do erro e a mensagem para ajudar a identificar causas
+    // específicas de navegador (ex: bloqueios do Safari/ITP).
+    console.error("[Sofia18] Erro de conexão ao curtir/descurtir:", err.name, err.message);
+  } finally {
     modalLikeBtn.disabled = false;
   }
 });
