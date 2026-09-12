@@ -30,6 +30,7 @@
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -155,13 +156,11 @@
   flex: 1;
   height: 20px;
   max-width: 140px;
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--color-white) 0 2px,
-    transparent 2px 5px,
-    var(--color-white) 5px 6px,
-    transparent 6px 10px
-  );
+  background-image: repeating-linear-gradient(90deg,
+      var(--color-white) 0 2px,
+      transparent 2px 5px,
+      var(--color-white) 5px 6px,
+      transparent 6px 10px);
 }
 
 /* Conteúdo principal do ticket */
@@ -193,6 +192,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 20%;
 }
 
 .home-photo-frame--empty {
@@ -310,10 +310,12 @@
 }
 
 @keyframes age-glow {
+
   0%,
   100% {
     text-shadow: 3px 3px 0 var(--color-red-dark);
   }
+
   50% {
     text-shadow: 3px 3px 0 var(--color-red-dark), 0 0 26px rgba(196, 20, 20, 0.55);
   }
@@ -406,13 +408,11 @@
     width: 20px;
     height: 100px;
     max-width: none;
-    background-image: repeating-linear-gradient(
-      0deg,
-      var(--color-white) 0 2px,
-      transparent 2px 5px,
-      var(--color-white) 5px 6px,
-      transparent 6px 10px
-    );
+    background-image: repeating-linear-gradient(0deg,
+        var(--color-white) 0 2px,
+        transparent 2px 5px,
+        var(--color-white) 5px 6px,
+        transparent 6px 10px);
   }
 
   .home-ticket__main {
