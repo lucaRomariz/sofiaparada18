@@ -1,0 +1,421 @@
+/* ============================================================
+   SOFIA 18 — Home
+   Depende de css/global.css (tokens, .ticket, .divider, .btn)
+   ============================================================ */
+
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-md);
+  position: relative;
+  z-index: 1;
+}
+
+.home-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  width: 100%;
+  animation: home-layout-in 0.7s ease both;
+}
+
+@keyframes home-layout-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-photobooth-group {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 1100px) {
+  .home-layout {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .home-ticket {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Em telas bem largas os cartões saem do fluxo normal e ficam
+     afastados nas laterais do ticket, com leve sobreposição apenas
+     na quina — não "atrás" dele. */
+  .home-photobooth {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+  }
+
+  .home-photobooth--left {
+    left: -230px;
+    transform: translateY(-50%) rotate(-8deg);
+  }
+
+  .home-photobooth--right {
+    right: -230px;
+    transform: translateY(-50%) rotate(8deg);
+  }
+
+  /* No desktop há espaço de sobra — os cartões ficam bem maiores
+     para terem presença visual de verdade ao lado do ticket.
+     No mobile (fora desta media query) o tamanho continua 120px. */
+  .home-photobooth {
+    width: 210px;
+  }
+
+  .home-photobooth__frame {
+    margin-bottom: 10px;
+  }
+
+  .home-photobooth__label {
+    font-size: 0.7rem;
+    margin-top: 6px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Textura sutil (grunge/grain), como o convite impresso.
+   SVG de ruído em baixíssima opacidade — não deve prejudicar
+   legibilidade nem performance.
+   ------------------------------------------------------------ */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------
+   Cartão-ticket da Home
+   ------------------------------------------------------------ */
+
+.home-ticket {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  background-color: var(--color-black-pure);
+  border: var(--border-width) solid var(--color-red-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Faixa lateral (vertical no desktop, horizontal no mobile) */
+.home-ticket__strip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px dashed var(--color-red-dark);
+}
+
+.home-ticket__strip-text {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: var(--letter-spacing-wider);
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.home-ticket__strip-star {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-red);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.home-ticket__barcode {
+  flex: 1;
+  height: 20px;
+  max-width: 140px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-white) 0 2px,
+    transparent 2px 5px,
+    var(--color-white) 5px 6px,
+    transparent 6px 10px
+  );
+}
+
+/* Conteúdo principal do ticket */
+.home-ticket__main {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------
+   Foto principal da Sofia
+   Estado normal: foto real, em moldura circular vermelha.
+   Estado vazio: contorno tracejado + ícone, até a foto existir.
+   ------------------------------------------------------------ */
+
+.home-photo-frame {
+  width: 112px;
+  height: 112px;
+  margin: 0 auto var(--spacing-md);
+  border-radius: 50%;
+  border: 2px solid var(--color-red);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-black-soft, #0a0a0a);
+}
+
+.home-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-photo-frame--empty {
+  border-style: dashed;
+  border-color: var(--color-red-dark);
+}
+
+.home-photo-frame--empty img {
+  display: none;
+}
+
+.home-photo-frame--empty::after {
+  content: "";
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-red-dark);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 7h3l2-2h6l2 2h3v12H4z'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 7h3l2-2h6l2 2h3v12H4z'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  opacity: 0.6;
+}
+
+/* ------------------------------------------------------------
+   Tira estilo fotomatic — 3 fotos empilhadas na vertical,
+   como uma tira de máquina fotográfica retrô.
+   ------------------------------------------------------------ */
+
+.home-photobooth {
+  width: 120px;
+  margin: 0;
+  padding: 10px 10px 16px;
+  background-color: var(--color-white);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.home-photobooth--left {
+  transform: rotate(-3deg);
+}
+
+.home-photobooth--right {
+  transform: rotate(3deg);
+}
+
+.home-photobooth__frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 8px;
+  background-color: var(--color-black-soft, #0a0a0a);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-photobooth__frame:last-of-type {
+  margin-bottom: 0;
+}
+
+.home-photobooth__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-photobooth__frame--empty img {
+  display: none;
+}
+
+.home-photobooth__frame--empty::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-red-dark);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 7h3l2-2h6l2 2h3v12H4z'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 7h3l2-2h6l2 2h3v12H4z'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.home-photobooth__label {
+  text-align: center;
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.55rem;
+  letter-spacing: var(--letter-spacing-wider);
+  color: var(--color-black-pure);
+}
+
+.home-ticket__eyebrow {
+  color: var(--color-white);
+  opacity: 0.8;
+}
+
+.home-ticket__name {
+  color: var(--color-red);
+  font-size: clamp(2.75rem, 14vw, 5rem);
+  text-shadow: 2px 2px 0 var(--color-red-dark);
+  margin-top: var(--spacing-sm);
+}
+
+.home-ticket__age {
+  color: var(--color-red);
+  font-size: clamp(4rem, 22vw, 7rem);
+  text-shadow: 3px 3px 0 var(--color-red-dark);
+  animation: age-glow 3.5s ease-in-out infinite;
+}
+
+@keyframes age-glow {
+  0%,
+  100% {
+    text-shadow: 3px 3px 0 var(--color-red-dark);
+  }
+  50% {
+    text-shadow: 3px 3px 0 var(--color-red-dark), 0 0 26px rgba(196, 20, 20, 0.55);
+  }
+}
+
+.home-ticket__date {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-white);
+  margin-top: var(--spacing-xs);
+}
+
+.home-ticket__year {
+  display: inline-block;
+  margin-top: var(--spacing-sm);
+  padding: 0.25rem 1.25rem;
+  border: var(--border-width) solid var(--color-red);
+  border-radius: var(--radius-sm);
+  color: var(--color-red);
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.home-ticket__message {
+  color: var(--color-white);
+  opacity: 0.85;
+  max-width: 32ch;
+  margin: 0 auto;
+  font-size: 0.95rem;
+}
+
+.home-ticket__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+
+.home-footer {
+  color: var(--color-white);
+  opacity: 0.5;
+  text-align: center;
+}
+
+.home-admin-link {
+  display: block;
+  text-align: center;
+  margin-top: -8px;
+  font-size: 0.65rem;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-white);
+  opacity: 0.25;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-admin-link:hover {
+    opacity: 0.6;
+  }
+}
+
+/* ------------------------------------------------------------
+   Desktop: faixa lateral vira uma coluna vertical, como no
+   convite físico (texto rotacionado + código de barras vertical)
+   ------------------------------------------------------------ */
+
+@media (min-width: 640px) {
+  .home-ticket {
+    flex-direction: row;
+  }
+
+  .home-ticket__strip {
+    flex-direction: column;
+    width: 72px;
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px dashed var(--color-red-dark);
+    padding: var(--spacing-md) var(--spacing-xs);
+  }
+
+  .home-ticket__strip-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .home-ticket__barcode {
+    width: 20px;
+    height: 100px;
+    max-width: none;
+    background-image: repeating-linear-gradient(
+      0deg,
+      var(--color-white) 0 2px,
+      transparent 2px 5px,
+      var(--color-white) 5px 6px,
+      transparent 6px 10px
+    );
+  }
+
+  .home-ticket__main {
+    flex: 1;
+  }
+}

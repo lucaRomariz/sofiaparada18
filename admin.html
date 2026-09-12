@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://jjctwvkwtofuflktoaxb.supabase.co" />
+  <title>Admin — Sofia 18</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Login -->
+  <section id="admin-login" class="admin-login-page">
+    <div class="ticket admin-login-card">
+      <p class="eyebrow" style="text-align:center;">Sofia 18 · Admin</p>
+      <h1 class="display-title admin-login-title">Área restrita</h1>
+      <div class="divider"><span class="divider__mark"></span></div>
+
+      <form id="admin-login-form" novalidate>
+        <div class="field">
+          <label for="admin-email">E-mail</label>
+          <input type="email" id="admin-email" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="admin-password">Senha</label>
+          <input type="password" id="admin-password" autocomplete="current-password" required />
+        </div>
+        <p class="admin-login-error" id="admin-login-error"></p>
+        <button type="submit" class="btn btn--filled" id="admin-login-submit">Entrar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Toast de feedback -->
+  <div class="admin-toast" id="admin-toast" hidden></div>
+
+  <!-- Dashboard -->
+  <section id="admin-dashboard" class="admin-dashboard" hidden>
+    <div class="admin-dashboard__header">
+      <div>
+        <p class="eyebrow">Sofia 18 · Admin</p>
+        <h1 class="display-title admin-dashboard__title">Dashboard</h1>
+      </div>
+      <div class="admin-dashboard__header-actions">
+        <a href="index.html" class="btn">← Home</a>
+        <button type="button" class="btn" id="admin-logout">Sair</button>
+      </div>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat">
+        <p class="admin-stat__value" id="stat-total-photos">0</p>
+        <p class="admin-stat__label">Fotos</p>
+      </div>
+      <div class="admin-stat">
+        <p class="admin-stat__value" id="stat-total-people">0</p>
+        <p class="admin-stat__label">Pessoas</p>
+      </div>
+      <div class="admin-stat">
+        <p class="admin-stat__value" id="stat-total-comments">0</p>
+        <p class="admin-stat__label">Comentários</p>
+      </div>
+      <div class="admin-stat">
+        <p class="admin-stat__value" id="stat-total-likes">0</p>
+        <p class="admin-stat__label">Curtidas</p>
+      </div>
+    </div>
+
+    <div class="admin-actions-bar">
+      <a href="album.html" class="btn">Ver álbum público</a>
+      <button type="button" class="btn btn--filled" id="admin-download-all">Baixar todas (.zip)</button>
+    </div>
+    <p class="admin-download-status" id="admin-download-all-status"></p>
+
+    <div class="admin-grid" id="admin-grid">
+      <p class="admin-loading">Carregando fotos...</p>
+    </div>
+
+    <div class="divider" style="margin-top: var(--spacing-xl);"><span class="divider__mark"></span></div>
+
+    <h2 class="display-title admin-section-title">Comentários</h2>
+    <div class="admin-comments-list" id="admin-comments-list">
+      <p class="admin-loading">Carregando comentários...</p>
+    </div>
+  </section>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

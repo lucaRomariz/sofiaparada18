@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://jjctwvkwtofuflktoaxb.supabase.co" />
+  <title>Sofia 18 — VIP Pass</title>
+  <meta name="description" content="Aniversário de 18 anos da Sofia Parada — envie suas fotos e reviva o álbum colaborativo da festa." />
+  <meta property="og:title" content="Sofia 18 — VIP Pass" />
+  <meta property="og:description" content="Aniversário de 18 anos da Sofia Parada, 12 de setembro de 2026. Envie suas fotos e reviva o álbum colaborativo da festa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sofiaparada18.com" />
+  <meta property="og:image" content="https://sofiaparada18.com/assets/references/convite-sofia-18.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <main class="home">
+    <div class="home-layout">
+      <section class="home-ticket">
+        <div class="home-ticket__strip">
+          <span class="home-ticket__strip-star" aria-hidden="true"></span>
+          <span class="home-ticket__strip-text">VIP PASS</span>
+          <div class="home-ticket__barcode" aria-hidden="true"></div>
+        </div>
+
+        <div class="home-ticket__main">
+          <div class="home-photo-frame" id="hero-photo-frame">
+            <img id="hero-photo" alt="Foto da Sofia" />
+          </div>
+
+          <p class="eyebrow home-ticket__eyebrow">Aniversário da</p>
+          <h1 class="display-title home-ticket__name">SOFIA<br />PARADA</h1>
+
+          <div class="divider"><span class="divider__mark"></span></div>
+
+          <p class="display-title home-ticket__age">18</p>
+          <p class="home-ticket__date">12 de setembro</p>
+          <span class="home-ticket__year">2026</span>
+
+          <div class="divider"><span class="divider__mark"></span></div>
+
+          <p class="home-ticket__message" id="hero-message">
+            Você foi convidado para guardar os momentos desta noite.
+          </p>
+
+          <div class="home-ticket__actions">
+            <a href="upload.html" class="btn btn--filled">Enviar fotos</a>
+            <a href="album.html" class="btn">Ver álbum</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="home-photobooth-group">
+        <div class="home-photobooth home-photobooth--left" id="photobooth-left" aria-hidden="true">
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <p class="home-photobooth__label">SOFIA 18</p>
+        </div>
+
+        <div class="home-photobooth home-photobooth--right" id="photobooth-right" aria-hidden="true">
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <div class="home-photobooth__frame"><img alt="Foto da Sofia" /></div>
+          <p class="home-photobooth__label">SOFIA 18</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="eyebrow home-footer" id="footer-domain">sofiaparada18.com</p>
+    <a href="admin.html" class="home-admin-link">admin</a>
+  </main>
+
+  <script type="module">
+    import { EVENT_INFO } from "./js/config.js";
+
+    // Mantém a copy sincronizada com a fonte única de verdade
+    // (config.js), evitando duplicar o texto direto no HTML.
+    document.getElementById("hero-message").textContent = EVENT_INFO.messages.hero;
+    document.getElementById("footer-domain").textContent = EVENT_INFO.domain;
+
+    // --- Foto principal ------------------------------------------------
+    // Se o arquivo em EVENT_INFO.heroPhoto não existir ainda, o <img>
+    // dispara "error" e o quadro assume o estado vazio estilizado.
+    const heroPhotoEl = document.getElementById("hero-photo");
+    const heroFrameEl = document.getElementById("hero-photo-frame");
+
+    heroPhotoEl.addEventListener("error", () => {
+      heroFrameEl.classList.add("home-photo-frame--empty");
+    });
+    heroPhotoEl.src = EVENT_INFO.heroPhoto;
+
+    // --- Duas tiras estilo fotomatic, atrás do ticket -------------------
+    function fillPhotobooth(containerId, photoPaths) {
+      const frames = document.querySelectorAll(`#${containerId} .home-photobooth__frame`);
+      frames.forEach((frame, index) => {
+        const path = photoPaths[index];
+        const img = frame.querySelector("img");
+        if (!path) {
+          frame.classList.add("home-photobooth__frame--empty");
+          return;
+        }
+        img.addEventListener("error", () => {
+          frame.classList.add("home-photobooth__frame--empty");
+        });
+        img.src = path;
+      });
+    }
+
+    fillPhotobooth("photobooth-left", EVENT_INFO.galleryPhotosLeft);
+    fillPhotobooth("photobooth-right", EVENT_INFO.galleryPhotosRight);
+  </script>
+</body>
+</html>

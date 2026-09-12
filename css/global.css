@@ -1,0 +1,257 @@
+/* ============================================================
+   SOFIA 18 — Design System Global
+   Extraído do convite oficial (assets/references/convite-sofia-18.jpg)
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700&display=swap");
+
+:root {
+  /* Cores */
+  --color-black: #0a0a0a;
+  --color-black-pure: #000000;
+  --color-red: #c41414;
+  --color-red-bright: #e01e1e;
+  --color-red-dark: #7a0d0d;
+  --color-white: #f5f5f0;
+  --color-gray-texture: #4a4a4a;
+
+  /* Tipografia */
+  --font-display: "Anton", "Oswald", sans-serif;
+  --font-body: "Barlow", "Inter", sans-serif;
+
+  /* Espaçamentos */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: 4rem;
+
+  /* Bordas e formas */
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --border-width: 1px;
+  --letter-spacing-wide: 0.15em;
+  --letter-spacing-wider: 0.25em;
+}
+
+/* Reset básico */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Acessibilidade: foco visível sempre */
+:focus-visible {
+  outline: 2px solid var(--color-red-bright);
+  outline-offset: 2px;
+}
+
+/* Reduzir movimento para quem preferir */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Tipografia utilitária
+   ------------------------------------------------------------ */
+
+.display-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  font-size: 0.75rem;
+  color: var(--color-white);
+}
+
+/* ------------------------------------------------------------
+   Separador oficial: linha vermelha + losango central (✦)
+   Reproduz o elemento gráfico do convite sem depender de emoji
+   ------------------------------------------------------------ */
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: var(--border-width);
+  background-color: var(--color-red);
+  max-width: 120px;
+}
+
+.divider__mark {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-red);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------
+   Cartão-ticket: elemento-assinatura do projeto.
+   Recortes semicirculares nas laterais, como um ingresso físico.
+   Reutilizado como container central em todas as páginas.
+   ------------------------------------------------------------ */
+
+.ticket {
+  position: relative;
+  background-color: var(--color-black-pure);
+  border: var(--border-width) solid var(--color-red-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-black);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ticket::before {
+  left: -12px;
+}
+
+.ticket::after {
+  right: -12px;
+}
+
+/* ------------------------------------------------------------
+   Botões
+   ------------------------------------------------------------ */
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  font-size: 0.9rem;
+  border: var(--border-width) solid var(--color-red);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-white);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    background-color: var(--color-red);
+    color: var(--color-black-pure);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(196, 20, 20, 0.35);
+  }
+
+  .btn--filled:hover {
+    background-color: var(--color-red-bright);
+  }
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn--filled {
+  background-color: var(--color-red);
+  color: var(--color-black-pure);
+}
+
+/* ------------------------------------------------------------
+   Inputs
+   ------------------------------------------------------------ */
+
+.field {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.field label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background-color: var(--color-black-pure);
+  border: var(--border-width) solid var(--color-red);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  padding: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.field input::placeholder {
+  color: var(--color-gray-texture);
+}

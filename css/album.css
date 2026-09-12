@@ -1,0 +1,442 @@
+/* ============================================================
+   SOFIA 18 — Álbum
+   Depende de css/global.css (tokens, .divider, .btn)
+   ============================================================ */
+
+.album-header {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md) var(--spacing-md);
+}
+
+.album-header__title {
+  font-size: clamp(1.75rem, 8vw, 2.75rem);
+  color: var(--color-white);
+}
+
+/* ------------------------------------------------------------
+   Controles: filtro por desafio + ordenação
+   ------------------------------------------------------------ */
+
+.album-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-lg);
+  padding: 0 var(--spacing-md);
+}
+
+.album-controls__field {
+  flex: 1;
+  min-width: 160px;
+  margin-bottom: 0;
+}
+
+.album-controls__field select {
+  width: 100%;
+  background-color: var(--color-black-pure);
+  border: 1px solid var(--color-red);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.album-controls__field label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+/* ------------------------------------------------------------
+   Galeria: 2 colunas no mobile, 4 no desktop
+   ------------------------------------------------------------ */
+
+.album-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  padding: 0 4px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .album-gallery {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0 var(--spacing-md);
+  }
+}
+
+.album-item {
+  position: relative;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0;
+  background-color: var(--color-black-soft, #0a0a0a);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.album-item--enter {
+  animation: album-item-in 0.45s ease both;
+}
+
+@keyframes album-item-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.album-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .album-item:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.album-item:focus-visible img {
+  transform: scale(1.05);
+}
+
+.album-item__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px 8px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  text-align: left;
+}
+
+.album-item__name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-white);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-item__time {
+  font-size: 0.6rem;
+  color: var(--color-white);
+  opacity: 0.7;
+}
+
+.album-item__comment-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--color-red);
+  border-radius: 10px;
+  padding: 2px 7px 2px 18px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.album-item__comment-badge::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-red);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M21 12c0 4.4-4 8-9 8-1.1 0-2.1-.1-3-.4L3 21l1.5-4.5C3.5 15 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M21 12c0 4.4-4 8-9 8-1.1 0-2.1-.1-3-.4L3 21l1.5-4.5C3.5 15 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.album-item__like-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--color-red);
+  border-radius: 10px;
+  padding: 2px 7px 2px 18px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.album-item__like-badge::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-red);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M12 21s-7.5-4.7-10-9.3C.4 8.3 2 4.5 5.6 4c2-.3 3.8.7 5 2.3C11.8 4.7 13.6 3.7 15.6 4c3.6.5 5.2 4.3 3.6 7.7C20 16.3 12 21 12 21z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M12 21s-7.5-4.7-10-9.3C.4 8.3 2 4.5 5.6 4c2-.3 3.8.7 5 2.3C11.8 4.7 13.6 3.7 15.6 4c3.6.5 5.2 4.3 3.6 7.7C20 16.3 12 21 12 21z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.album-empty {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  opacity: 0.7;
+}
+
+.album-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  opacity: 0.6;
+}
+
+.album-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl) var(--spacing-md);
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------
+   Modal / lightbox
+   ------------------------------------------------------------ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal__content {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-black-pure);
+  border: 1px solid var(--color-red-dark);
+  border-radius: var(--radius-md);
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-red);
+  background-color: var(--color-black-pure);
+  color: var(--color-white);
+  font-size: 1.1rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+.modal__image {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal__meta {
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal__like-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto var(--spacing-sm);
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid var(--color-red);
+  border-radius: 999px;
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.modal__like-btn svg {
+  transition: fill 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal__like-btn:hover:not(:disabled) {
+    background-color: var(--color-red);
+    color: var(--color-black-pure);
+  }
+}
+
+.modal__like-btn--liked {
+  background-color: var(--color-red);
+  color: var(--color-black-pure);
+  cursor: default;
+}
+
+.modal__like-btn--liked svg {
+  fill: var(--color-black-pure);
+}
+
+.modal__like-btn--pulse {
+  animation: like-pulse 0.4s ease;
+}
+
+@keyframes like-pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.modal__name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-red);
+}
+
+.modal__date {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.modal__challenge {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: 1px dashed var(--color-red-dark);
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.modal__challenge[hidden] {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   Comentários
+   ------------------------------------------------------------ */
+
+.modal__comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  max-height: 180px;
+  overflow-y: auto;
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal__comment {
+  background-color: var(--color-black-soft, #0a0a0a);
+  border-left: 2px solid var(--color-red);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.modal__comment-author {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-red);
+}
+
+.modal__comment-text {
+  font-size: 0.9rem;
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.modal__comment-empty,
+.modal__comment-error {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 0.85rem;
+  padding: var(--spacing-sm) 0;
+}
+
+.modal__comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.modal__comment-form input {
+  background-color: var(--color-black-pure);
+  border: 1px solid var(--color-red);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.modal__comment-form input::placeholder {
+  color: var(--color-gray-texture);
+}

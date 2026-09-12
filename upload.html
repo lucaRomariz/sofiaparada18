@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://jjctwvkwtofuflktoaxb.supabase.co" />
+  <title>Enviar fotos — Sofia 18</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/upload.css" />
+</head>
+<body>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <main class="upload-page">
+    <section class="ticket upload-ticket">
+      <p class="eyebrow" style="text-align:center;">VIP Pass · Sofia 18</p>
+      <h1 class="display-title upload-ticket__title">Compartilhe seus momentos</h1>
+      <p class="upload-ticket__subtitle" id="upload-subtitle"></p>
+
+      <div class="divider"><span class="divider__mark"></span></div>
+
+      <form id="upload-form" novalidate>
+        <div class="field">
+          <label for="guest-name">Seu nome</label>
+          <input type="text" id="guest-name" name="guest-name" placeholder="Digite seu nome" autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="challenge-select">Desafio (opcional)</label>
+          <select id="challenge-select" name="challenge-select">
+            <option value="">Nenhum desafio específico</option>
+          </select>
+        </div>
+
+        <label class="upload-file-label btn" for="file-input">Escolher fotos</label>
+        <input
+          class="upload-file-input"
+          type="file"
+          id="file-input"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+        />
+
+        <div class="upload-previews" id="upload-previews"></div>
+
+        <div class="upload-success-check" id="upload-success-check" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="48" height="48">
+            <circle class="upload-success-check__circle" cx="26" cy="26" r="24" fill="none" />
+            <path class="upload-success-check__mark" fill="none" d="M14 27l7 7 16-16" />
+          </svg>
+        </div>
+
+        <p class="upload-feedback" id="upload-feedback" role="status"></p>
+
+        <div class="upload-progress" id="upload-progress">
+          <div class="upload-progress__bar" id="upload-progress-bar"></div>
+        </div>
+
+        <button type="submit" class="btn btn--filled" id="upload-submit">Enviar fotos</button>
+      </form>
+
+      <a href="index.html" class="upload-back-link">← Voltar para a home</a>
+    </section>
+  </main>
+
+  <script type="module" src="js/upload.js"></script>
+</body>
+</html>

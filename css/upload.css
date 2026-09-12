@@ -1,0 +1,193 @@
+/* ============================================================
+   SOFIA 18 — Upload
+   Depende de css/global.css (tokens, .ticket, .btn, .field)
+   ============================================================ */
+
+.upload-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.upload-ticket {
+  width: 100%;
+  max-width: 480px;
+}
+
+.upload-ticket__title {
+  text-align: center;
+  font-size: 1.75rem;
+}
+
+.upload-ticket__subtitle {
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Botão de seleção de arquivos: o input nativo é escondido,
+   o label assume a aparência de .btn */
+.upload-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.upload-file-label {
+  display: block;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Grade de prévias */
+.upload-previews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.upload-preview {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-red-dark);
+}
+
+.upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-preview__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--color-red);
+  color: var(--color-white);
+  font-size: 0.85rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Feedback de estado */
+.upload-feedback {
+  min-height: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.upload-feedback--error {
+  color: var(--color-red-bright);
+}
+
+.upload-feedback--success {
+  color: var(--color-white);
+}
+
+.upload-progress {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--color-black-pure);
+  border: 1px solid var(--color-red-dark);
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+  display: none;
+}
+
+.upload-progress--visible {
+  display: block;
+}
+
+.upload-progress__bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--color-red);
+  transition: width 0.2s ease;
+}
+
+/* ------------------------------------------------------------
+   Animação de sucesso: checkmark desenhado + confete
+   ------------------------------------------------------------ */
+
+.upload-success-check {
+  display: none;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--spacing-xs);
+}
+
+.upload-success-check--visible {
+  display: block;
+}
+
+.upload-success-check__circle {
+  stroke: var(--color-red);
+  stroke-width: 2;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: check-circle 0.5s ease-out forwards;
+}
+
+.upload-success-check__mark {
+  stroke: var(--color-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: check-mark 0.3s 0.45s ease-out forwards;
+}
+
+@keyframes check-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes check-mark {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.upload-confetti-piece {
+  position: fixed;
+  top: -12px;
+  width: 8px;
+  height: 8px;
+  z-index: 50;
+  pointer-events: none;
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(105vh) rotate(360deg);
+    opacity: 0.85;
+  }
+}
+
+.upload-back-link {
+  display: block;
+  text-align: center;
+  margin-top: var(--spacing-md);
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
